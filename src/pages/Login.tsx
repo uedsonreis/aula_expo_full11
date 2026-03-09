@@ -8,6 +8,7 @@ export default function LoginPage() {
     function signIn() {
         if (username.trim() === '') {
             Alert.alert('Login', 'O campo de login é obrigatório!');
+            return;
         }
 
         if (username === 'uedsonreis' && password === '123456') {
