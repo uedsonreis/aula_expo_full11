@@ -1,6 +1,11 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Button, StyleSheet, TextInput, Text, View, Alert } from "react-native";
 
+import * as authService from '../services/auth.service'
+
 export default function LoginPage() {
+
+    const navigation = useNavigation<NavigationProp<any>>();
 
     let username = '';
     let password = '';
@@ -11,18 +16,17 @@ export default function LoginPage() {
             return;
         }
 
-        if (username === 'uedsonreis' && password === '123456') {
-            Alert.alert('Usuário Logado', 'Login realizado com sucesso!');
-        } else {
-            Alert.alert('Login/Senha Inválido(a)', 'Usuário ou senha inválidos!');
-        }
+        authService.login(username, password).then(success => {
+            if (success) {
+                navigation.navigate('Home');
+            } else {
+                Alert.alert('Login/Senha Inválido(a)', 'Usuário ou senha inválidos!');
+            }
+        });
     }
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Text>Página de Acesso</Text>
-            </View>
 
             <Text style={styles.label}>Login:</Text>
             <TextInput style={styles.input} onChangeText={value => username = value} />

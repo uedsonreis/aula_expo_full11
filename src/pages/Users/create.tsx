@@ -1,8 +1,11 @@
 import { Button, TextInput, Text, View, Alert } from "react-native";
 
 import styles from "./styles";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 export default function UserCreatePage() {
+
+    const navigation = useNavigation<NavigationProp<any>>();
 
     let name = '';
     let username = '';
@@ -28,14 +31,11 @@ export default function UserCreatePage() {
         }
 
         // Salvar o usuário
-        Alert.alert('Usuário Criado', 'Usuário criado com sucesso!');
+        navigation.goBack();
     }
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Text>Cadastro de Usuário</Text>
-            </View>
 
             <Text style={styles.label}>Nome:</Text>
             <TextInput style={styles.input} onChangeText={value => name = value} />
