@@ -1,7 +1,8 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Button, StyleSheet, TextInput, Text, View, Alert } from "react-native";
 
-import * as authService from '../services/auth.service'
+import MyInput from "../components/MyInput";
+import * as authService from '../services/auth.service';
 
 export default function LoginPage() {
 
@@ -28,11 +29,9 @@ export default function LoginPage() {
     return (
         <View style={styles.container}>
 
-            <Text style={styles.label}>Login:</Text>
-            <TextInput style={styles.input} onChangeText={value => username = value} />
+            <MyInput label='Login' onChangeText={value => username = value} />
 
-            <Text style={styles.label}>Senha:</Text>
-            <TextInput style={styles.input} secureTextEntry={true} onChangeText={value => password = value} />
+            <MyInput label='Senha' onChangeText={value => password = value} secureTextEntry />
 
             <View style={styles.buttonView}>
                 <Button title="Entrar" onPress={signIn} />
@@ -51,16 +50,6 @@ const styles = StyleSheet.create({
     },
     header: {
         marginBottom: 20,
-    },
-    label: {
-        width: '85%',
-    },
-    input: {
-        padding: 10,
-        width: '85%',
-        borderWidth: 1,
-        marginBottom: 10,
-        borderColor: '#ccc',
     },
     buttonView: {
         width: '70%',

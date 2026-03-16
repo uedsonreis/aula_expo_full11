@@ -10,16 +10,6 @@ export default StyleSheet.create({
     header: {
         marginBottom: 20,
     },
-    label: {
-        width: '85%',
-    },
-    input: {
-        padding: 10,
-        width: '85%',
-        borderWidth: 1,
-        marginBottom: 10,
-        borderColor: '#ccc',
-    },
     buttonView: {
         width: '70%',
         marginTop: 20,

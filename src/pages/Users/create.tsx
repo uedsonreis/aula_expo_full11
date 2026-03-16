@@ -1,7 +1,10 @@
 import { Button, TextInput, Text, View, Alert } from "react-native";
+import { StackActions, NavigationProp, useNavigation } from "@react-navigation/native";
+
+import MyInput from "../../components/MyInput";
+import * as userService from '../../services/user.service';
 
 import styles from "./styles";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 export default function UserCreatePage() {
 
@@ -30,24 +33,29 @@ export default function UserCreatePage() {
             return;
         }
 
-        // Salvar o usuário
-        navigation.goBack();
+        const user = { name, username, password };
+        userService.create(user).then(success => {
+            if (success) {
+                navigation.goBack();
+            } else {
+                Alert.alert('Usuário não criado', 'Login já existente!');
+            }
+        }).catch(error => {
+            console.error('Error to save user', error)
+            navigation.dispatch(StackActions.popToTop());
+        })
     }
 
     return (
         <View style={styles.container}>
 
-            <Text style={styles.label}>Nome:</Text>
-            <TextInput style={styles.input} onChangeText={value => name = value} />
+            <MyInput label='Nome' onChangeText={value => name = value} />
 
-            <Text style={styles.label}>Login:</Text>
-            <TextInput style={styles.input} onChangeText={value => username = value} />
+            <MyInput label='Login' onChangeText={value => username = value} />
 
-            <Text style={styles.label}>Senha:</Text>
-            <TextInput style={styles.input} secureTextEntry={true} onChangeText={value => password = value} />
+            <MyInput label='Senha' secureTextEntry={true} onChangeText={value => password = value} />
 
-            <Text style={styles.label}>Confirmar Senha:</Text>
-            <TextInput style={styles.input} secureTextEntry={true} onChangeText={value => confirmPassword = value} />
+            <MyInput label='Confirmar Senha' secureTextEntry onChangeText={value => confirmPassword = value} />
 
             <View style={styles.buttonView}>
                 <Button title="Salvar" onPress={save} />
