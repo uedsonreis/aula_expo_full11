@@ -14,6 +14,14 @@ export default function UserListPage() {
     
     const [users, setUsers] = React.useState<User[]>([])
 
+    function fetchUsers() {
+        userService.getList().then(data => {
+            setUsers(data)
+        }).catch(error => {
+            signOut()
+        })
+    }
+
     React.useEffect(() => {
         navigation.setOptions({
             headerLeft: () => <Button onPress={signOut}>Sair</Button>,
@@ -21,11 +29,9 @@ export default function UserListPage() {
             headerRight: () => <Button onPress={goToCreate}>Add</Button>,
         });
 
-        userService.getList().then(data => {
-            setUsers(data)
-        }).catch(error => {
-            signOut()
-        })
+        navigation.addListener('focus', fetchUsers)
+
+        fetchUsers()
     }, [])
 
     function signOut() {
@@ -41,9 +47,14 @@ export default function UserListPage() {
         navigation.navigate('UpdateUser', user);
     }
 
+    function removeUser(user: User) {
+        userService.remove(user.id!)
+            .then(deleted => fetchUsers())
+            .catch(error => navigation.goBack())
+    }
+
     return (
         <View style={styles.container}>
-
             <View style={styles.header}>
                 <Text>{users.length} usuários cadastrados.</Text>
             </View>
@@ -51,7 +62,7 @@ export default function UserListPage() {
             <FlatList
                 data={users}
                 keyExtractor={item => item.username}
-                renderItem={({ item }) => <ListItem user={item} edit={goToUpdate} />}
+                renderItem={({ item }) => <ListItem user={item} edit={goToUpdate} remove={removeUser} />}
             />
 
         </View>

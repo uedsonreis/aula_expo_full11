@@ -14,7 +14,7 @@ export async function create(user: User) {
             'Authorization': `Bearer ${signed?.token}`,
         },
         body: JSON.stringify(user),
-    })
+    });
 
     if (response.ok) {
         return true;
@@ -35,7 +35,7 @@ export async function getList() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${signed?.token}`,
         },
-    })
+    });
 
     if (response.ok) {
         return await response.json();
@@ -55,7 +55,7 @@ export async function update(user: User) {
             'Authorization': `Bearer ${signed?.token}`,
         },
         body: JSON.stringify(user),
-    })
+    });
 
     if (response.ok) {
         return true;
@@ -65,4 +65,20 @@ export async function update(user: User) {
     }
 
     return false;
+}
+
+export async function remove(id: number) {
+    const signed = await getAuthUser();
+
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${signed?.token}`,
+        }
+    });
+
+    if (response.ok) return true;
+    
+    throw new Error('Unauthorized');
 }
